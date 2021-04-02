@@ -2,14 +2,13 @@ package proyecto1;
 
 import java.util.Scanner;
 import java.io.*;
-import java.util.*;
 
 public class Agenda {
 
     Scanner readinput = new Scanner(System.in);
     Scanner sn = new Scanner(System.in);
-    
-    File ficherodeposito = new File("deposito.txt");
+
+    File ficherodeposito = new File("agenda.txt");
 
     private Contacto[] contactos;
 
@@ -36,12 +35,12 @@ public class Agenda {
     public boolean verificarNombre(String nombre, boolean encontrado) {
         try {
 
-            BufferedReader leer = new BufferedReader(new FileReader("deposito.txt"));
+            BufferedReader leer = new BufferedReader(new FileReader("agenda.txt"));
             String linea = "";
             encontrado = false;
             while ((linea = leer.readLine()) != null) {
                 if (linea.indexOf(nombre) != -1) {
-                    System.out.println("Se encontro el registro");
+                    //System.out.println("Se encontro el registro");
 
                     encontrado = true;
                     break;
@@ -54,16 +53,16 @@ public class Agenda {
         return encontrado;
 
     }
-    
-     public boolean verificarTelefono(String telefono, boolean encontrado) {
+
+    public boolean verificarTelefono(String telefono, boolean encontrado) {
         try {
 
-            BufferedReader leer = new BufferedReader(new FileReader("deposito.txt"));
+            BufferedReader leer = new BufferedReader(new FileReader("agenda.txt"));
             String linea = "";
             encontrado = false;
             while ((linea = leer.readLine()) != null) {
                 if (linea.indexOf(telefono) != -1) {
-                    System.out.println("Se encontro el registro");
+                    //System.out.println("Se encontro el registro");
 
                     encontrado = true;
                     break;
@@ -75,35 +74,6 @@ public class Agenda {
         }
         return encontrado;
 
-    }
-
-    public void agregarAlArchivoTexto(Contacto c) {
-        try {
-
-            BufferedWriter Fescribe = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(ficherodeposito, true)));
-            BufferedReader leer = new BufferedReader(new FileReader("deposito.txt"));
-
-            String linea = "";
-
-            for (int i = 0; i < contactos.length; i++) {
-                if (contactos[i] != null) {
-
-                    if (verificarNombre(contactos[i].getNombre(), false) || verificarTelefono(contactos[i].getTelefono(), false) == true) {
-                        i++;
-
-                    }
-                    {
-                        Fescribe.write(contactos[i].getNombre() + ";" + contactos[i].getTelefono() + ";" + contactos[i].getCorreo() + ";"
-                                + contactos[i].getDireccion() + ";" + contactos[i].getAlias() + ";");
-                        Fescribe.write("\n");
-                    }
-                }
-            }
-
-            Fescribe.close();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
     }
 
     public void añadirContacto(Contacto c) {
@@ -134,7 +104,7 @@ public class Agenda {
                 if (contactos[i] == null) {
 
                     contactos[i] = c;
-
+                    agregarAlArchivoTexto(c);
                     encontrado = true;
                 }
             }
@@ -142,6 +112,7 @@ public class Agenda {
             if (encontrado) {
                 System.out.println("Se ha agregado");
                 System.out.println("");
+
             } else {
                 System.out.println("No se ha agregado");
                 System.out.println("");
@@ -285,7 +256,7 @@ public class Agenda {
 
     }
 
-    public void añadirContactoAux(Contacto c) {
+    public void añadirContactoEditado(Contacto c) {
 
         boolean encontrado = false;
         boolean aux = true;
@@ -311,7 +282,9 @@ public class Agenda {
         if (aux) {
             for (int i = 0; i < contactos.length && !encontrado; i++) {
                 if (contactos[i] == null) {
+
                     contactos[i] = c;
+                    agregarAlArchivoTexto(c);
                     encontrado = true;
                 }
             }
@@ -355,7 +328,7 @@ public class Agenda {
 
         boolean encontrado = false;
         String auxNombre, auxCorreo, auxDireccion, auxAlias, auxTelefono;
-       // Long auxTelefono;
+
         for (int i = 0; i < contactos.length; i++) {
             if (contactos[i] != null && contactos[i].getNombre().equals(c.getNombre())) {
 
@@ -384,8 +357,6 @@ public class Agenda {
                     }
                 }
 
-                //auxTelefono = Long.parseLong(tel);
-
                 System.out.println("Ingrese el nuevo correo");
                 auxCorreo = readinput.nextLine();
 
@@ -397,9 +368,11 @@ public class Agenda {
                 System.out.println("");
 
                 eliminarContactoAux(c);
-                c = new Contacto(auxNombre, auxTelefono, auxCorreo, auxDireccion, auxAlias);
-                añadirContactoAux(c);
 
+                c = new Contacto(auxNombre, auxTelefono, auxCorreo, auxDireccion, auxAlias);
+                añadirContactoEditado(c);
+                eliminarArchivoTexto();
+                llenarArchivoTexto(c);
                 break;
             }
 
@@ -409,6 +382,142 @@ public class Agenda {
         if (!encontrado) {
             System.out.println("No se ah encontrado el contacto");
             System.out.println("");
+        }
+
+    }
+
+    public void leerTexto() {
+        try {
+
+            BufferedWriter Fescribe = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(ficherodeposito, true)));
+            BufferedReader leer = new BufferedReader(new FileReader("agenda.txt"));
+
+            String linea = "";
+            while ((linea = leer.readLine()) != null) {
+
+                String[] contacto = linea.split(";");
+                Contacto c = new Contacto(contacto[0], contacto[1], contacto[2], contacto[3], contacto[4]);
+                añadirContacto2(c);
+
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void agregarAlArchivoTexto(Contacto c) {
+        try {
+
+            BufferedWriter Fescribe = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(ficherodeposito, true)));
+            BufferedReader leer = new BufferedReader(new FileReader("agenda.txt"));
+
+            if (c != null) {
+
+                if (verificarNombre(c.getNombre(), false) || verificarTelefono(c.getTelefono(), false) == true) {
+
+                }
+                {
+                    Fescribe.write(c.getNombre() + ";" + c.getTelefono() + ";" + c.getCorreo() + ";"
+                            + c.getDireccion() + ";" + c.getAlias() + ";");
+                    Fescribe.write("\n");
+                }
+            }
+
+            Fescribe.close();
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void añadirContacto2(Contacto c) {
+
+        boolean encontrado = false;
+        boolean aux = true;
+
+        for (int i = 0; i < contactos.length && !encontrado; i++) {
+            if (contactos[i] != null && contactos[i].getNombre().equals(c.getNombre())) {
+
+                aux = false;
+            }
+        }
+
+        for (int i = 0; i < contactos.length && !encontrado; i++) {
+            if (contactos[i] != null && contactos[i].getTelefono().equals(c.getTelefono())) {
+
+                aux = false;
+            }
+        }
+
+        if (aux) {
+
+            for (int i = 0; i < contactos.length && !encontrado; i++) {
+
+                if (contactos[i] == null) {
+
+                    contactos[i] = c;
+
+                    encontrado = true;
+                }
+            }
+
+        }
+    }
+
+    public void eliminarArchivoTexto() {
+
+        try {
+            BufferedWriter Fescribe = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(ficherodeposito, false)));
+            Fescribe.write("");
+            Fescribe.close();
+
+        } catch (Exception e) {
+
+            System.out.println(e);
+
+        }
+
+    }
+
+    public void llenarArchivoTexto(Contacto c) {
+
+        for (int i = 0; i < contactos.length; i++) {
+
+            if (contactos[i] != null) {
+
+                c = contactos[i];
+                agregarAlArchivoTexto(c);
+
+            }
+        }
+
+    }
+
+    public void importarContactos() {
+
+        String direccion = "agendaImportar.txt";
+
+        try {
+
+            BufferedReader leer = new BufferedReader(new FileReader(direccion));
+
+            String linea = "";
+            while ((linea = leer.readLine()) != null) {
+
+                String[] contacto = linea.split(";");
+                Contacto c = new Contacto(contacto[0], contacto[1], contacto[2], contacto[3], contacto[4]);
+                if (verificarNombre(contacto[0], false) == false && verificarTelefono(contacto[1], false) == false) {
+                    añadirContacto2(c);
+                    agregarAlArchivoTexto(c);
+                    System.out.println("Contacto importado");
+                } else {
+                    System.out.println("El contacto no se importo por nombre o numero de telefono repetido");
+                }
+
+            }
+            System.out.println("");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
 
     }

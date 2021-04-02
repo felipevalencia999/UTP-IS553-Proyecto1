@@ -1,0 +1,3 @@
+felipe;3007424943;pipevv999@gmail.com;calle 12 a #4-21;pipe;
+cesar diaz;3251818;cesar.diaz@gmail.com;;profe;
+juan tamariz;3181515;jtamariz@gmail.com;cra 12 #18-25;mago;

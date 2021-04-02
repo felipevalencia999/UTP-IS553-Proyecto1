@@ -2,11 +2,7 @@ package proyecto1;
 
 public class Contacto {
 
-    private String nombre;
-    private String telefono;
-    private String correo;
-    private String direccion;
-    private String alias;
+    private String nombre, telefono, correo, direccion, alias;
 
     public Contacto(String nombre, String telefono, String correo, String direccion, String alias) {
         this.nombre = nombre;

@@ -1,0 +1,3 @@
+carlos;456321;carlos@gmail.com;cra 4ta 8-21;carl;
+pedro;74563;pedro@gmail.com;clle 78 4-32;;
+federico;3007424943;;cll 32 4-7;fede;
