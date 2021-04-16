@@ -244,6 +244,8 @@ public class Agenda {
             if (contactos[i] != null && contactos[i].equals(c)) {
                 contactos[i] = null;
                 System.out.println("Contacto eliminado");
+                eliminarArchivoTexto();
+                llenarArchivoTexto(c);
                 System.out.println("");
                 encontrado = true;
             }
@@ -507,9 +509,11 @@ public class Agenda {
                 String[] contacto = linea.split(";");
                 Contacto c = new Contacto(contacto[0], contacto[1], contacto[2], contacto[3], contacto[4]);
                 if (verificarNombre(contacto[0], false) == false && verificarTelefono(contacto[1], false) == false) {
-                    añadirContacto2(c);
+
                     agregarAlArchivoTexto(c);
+                    añadirContacto2(c);
                     System.out.println("Contacto importado");
+
                 } else {
                     System.out.println("El contacto no se importo por nombre o numero de telefono repetido");
                 }
