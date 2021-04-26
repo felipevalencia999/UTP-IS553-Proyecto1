@@ -17,7 +17,7 @@ public class Main {
         agendaTelefonica.leerTexto();
         agendaTelefonica.existearchivo();
 
-        String nombre, telefono, correo, direccion, alias;
+        String nombre, telefono, correo, direccion, alias, lugar;
 
         Contacto c;
 
@@ -68,8 +68,17 @@ public class Main {
 
                     System.out.println("Escribe un alias");
                     alias = readinput.nextLine();
+                    
+                    System.out.println("Escribe lugar donde lo conocio");
+                    lugar = readinput.nextLine();
+                    if (lugar.equals("")) {
+                        for (int i = 0; lugar.equals(""); i++) {
+                            System.out.println("Debes agregar un lugar");
+                            lugar = readinput.nextLine();
+                        }
+                    }
 
-                    c = new Contacto(nombre, telefono, correo, direccion, alias);
+                    c = new Contacto(nombre, telefono, correo, direccion, alias, lugar);
                     agendaTelefonica.añadirContacto(c);
 
                     break;
@@ -79,7 +88,7 @@ public class Main {
                     System.out.println("Escribe nombre de contacto a eliminar");
                     nombre = readinput.nextLine();
 
-                    c = new Contacto(nombre, "", "", "", "");
+                    c = new Contacto(nombre, "", "", "", "", "");
                     agendaTelefonica.eliminarContacto(c);
 
                     break;
@@ -129,16 +138,19 @@ public class Main {
 
                     break;
 
+                    
                 case 8:
 
                     System.out.println("Escriba el nombre del contacto a editar");
                     nombre = readinput.nextLine();
 
-                    c = new Contacto(nombre, "", "", "", "");
+                    c = new Contacto(nombre, "", "", "", "", "");
 
                     agendaTelefonica.editarContacto(c);
 
                     break;
+
+                      
 
                 case 9:
 

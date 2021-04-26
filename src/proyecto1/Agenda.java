@@ -135,8 +135,8 @@ public class Agenda {
                 System.out.println("Su Telefono es: " + contactos[i].getTelefono());
                 System.out.println("Su Correo es: " + contactos[i].getCorreo());
                 System.out.println("Su Direccion es: " + contactos[i].getDireccion());
-
                 System.out.println("Su Alias es: " + contactos[i].getAlias());
+                System.out.println("El lugar donde lo conocio es: " + contactos[i].getLugar());
                 System.out.println("");
 
             }
@@ -158,6 +158,7 @@ public class Agenda {
                 System.out.println("Su Correo es: " + contactos[i].getCorreo());
                 System.out.println("Su Direccion es: " + contactos[i].getDireccion());
                 System.out.println("Su Alias es: " + contactos[i].getAlias());
+                System.out.println("El lugar donde lo conocio es: "+contactos[i].getLugar());
                 System.out.println("");
 
             }
@@ -180,6 +181,7 @@ public class Agenda {
                 System.out.println("Su Telefono es: " + contactos[i].getTelefono());
                 System.out.println("Su Direccion es: " + contactos[i].getDireccion());
                 System.out.println("Su Alias es: " + contactos[i].getAlias());
+                System.out.println("El lugar donde lo conocio es: "+contactos[i].getLugar());
                 System.out.println("");
 
             }
@@ -202,6 +204,7 @@ public class Agenda {
                 System.out.println("Su Telefono es: " + contactos[i].getTelefono());
                 System.out.println("Su correo es: " + contactos[i].getCorreo());
                 System.out.println("Su Alias es: " + contactos[i].getAlias());
+                System.out.println("El lugar donde lo conocio es: "+contactos[i].getLugar());
                 System.out.println("");
 
             }
@@ -224,6 +227,7 @@ public class Agenda {
                 System.out.println("Su Telefono es: " + contactos[i].getTelefono());
                 System.out.println("Su Correo es: " + contactos[i].getCorreo());
                 System.out.println("Su Direccion es: " + contactos[i].getDireccion());
+                System.out.println("El lugar donde lo conocio es: "+contactos[i].getLugar());
                 System.out.println("");
 
             }
@@ -329,7 +333,7 @@ public class Agenda {
     public void editarContacto(Contacto c) {
 
         boolean encontrado = false;
-        String auxNombre, auxCorreo, auxDireccion, auxAlias, auxTelefono;
+        String auxNombre, auxCorreo, auxDireccion, auxAlias, auxTelefono, auxLugar;
 
         for (int i = 0; i < contactos.length; i++) {
             if (contactos[i] != null && contactos[i].getNombre().equals(c.getNombre())) {
@@ -367,11 +371,24 @@ public class Agenda {
 
                 System.out.println("Ingrese el nuevo alias");
                 auxAlias = readinput.nextLine();
+                
+                System.out.println("Escribe un nuevo lugar");
+                auxLugar = readinput.nextLine();
+                for (i = 0; auxLugar.equals(""); i++) {
+                    System.out.println("Debes agregar un lugar");
+                    auxLugar = readinput.nextLine();
+
+                    if (auxLugar == "") {
+
+                        break;
+                    }
+                }
+                
                 System.out.println("");
 
                 eliminarContactoAux(c);
 
-                c = new Contacto(auxNombre, auxTelefono, auxCorreo, auxDireccion, auxAlias);
+                c = new Contacto(auxNombre, auxTelefono, auxCorreo, auxDireccion, auxAlias, auxLugar);
                 añadirContactoEditado(c);
                 eliminarArchivoTexto();
                 llenarArchivoTexto(c);
@@ -398,7 +415,7 @@ public class Agenda {
             while ((linea = leer.readLine()) != null) {
 
                 String[] contacto = linea.split(";");
-                Contacto c = new Contacto(contacto[0], contacto[1], contacto[2], contacto[3], contacto[4]);
+                Contacto c = new Contacto(contacto[0], contacto[1], contacto[2], contacto[3], contacto[4], contacto [5]);
                 añadirContacto2(c);
 
             }
@@ -420,7 +437,7 @@ public class Agenda {
                 }
                 {
                     Fescribe.write(c.getNombre() + ";" + c.getTelefono() + ";" + c.getCorreo() + ";"
-                            + c.getDireccion() + ";" + c.getAlias() + ";");
+                            + c.getDireccion() + ";" + c.getAlias() + ";" + c.getLugar() + ";");
                     Fescribe.write("\n");
                 }
             }
@@ -507,7 +524,7 @@ public class Agenda {
             while ((linea = leer.readLine()) != null) {
 
                 String[] contacto = linea.split(";");
-                Contacto c = new Contacto(contacto[0], contacto[1], contacto[2], contacto[3], contacto[4]);
+                Contacto c = new Contacto(contacto[0], contacto[1], contacto[2], contacto[3], contacto[4], contacto [5]);
                 if (verificarNombre(contacto[0], false) == false && verificarTelefono(contacto[1], false) == false) {
 
                     agregarAlArchivoTexto(c);
@@ -525,5 +542,6 @@ public class Agenda {
         }
 
     }
+    
 
 }
